@@ -1,4 +1,3 @@
-[
 var board = arrayListOf<ArrayList<String>>()
 
 fun main(args: Array<String>) {
@@ -27,17 +26,27 @@ fun main(args: Array<String>) {
             val positions = input.split(",")
             x = positions[0].trim().toInt()
             y = positions[1].trim().toInt()
+            var skipRound = false
+
             if (board[x - 1][y - 1] != "") {
                 println("thata position is alreade taken, try again")
+                skipRound = true
             } else {
                 board[x - 1][y - 1] = "X"
                 printBoard()
             }
 
+            if (!skipRound) {
+                val playerWon = checkWinner(true)
+                if (playerWon) {
+                    println("congratulations player, you WON!")
+                    continueGame = false
+                }
+            }
+
         } catch (e: Exception) {
             println("invalid input, please try again")
         }
-
     } while (continueGame)
 
 }
@@ -47,13 +56,38 @@ fun printBoard() {
     for (i in 0..2) {
         for (j in 0..2) {
             when (board[i][j]) {
-                "X" -> print("| X ")
-                "O" -> print("| O ")
-                else -> print("|    ")
+                "X" -> print("|  X  ")
+                "O" -> print("|  O  ")
+                else -> print("|     ")
             }
         }
         println("|")
         println("----------------")
     }
+}
+
+fun checkWinner(player: Boolean): Boolean {
+    var won = false
+    val checkSymbol = if (player) "X" else "O"
+    for (i in 0..2) {
+        //won horizontal
+        if (board[i][0] == checkSymbol && board[i][1] == checkSymbol && board[i][2] == checkSymbol) {
+            won = true
+            break
+        }
+        //won vertical
+        if (board[0][i] == checkSymbol && board[1][i] == checkSymbol && board[2][i] == checkSymbol) {
+            won = true
+            break
+        }
+    }
+    //won diagonal
+    if (board[0][0] == checkSymbol && board[1][1] == checkSymbol && board[2][2] == checkSymbol) {
+        won = true
+    }
+    if (board[2][0] == checkSymbol && board[1][1] == checkSymbol && board[0][2] == checkSymbol) {
+        won = true
+    }
+    return won
 }
 
