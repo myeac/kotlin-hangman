@@ -1,3 +1,5 @@
+import kotlin.random.Random
+
 var board = arrayListOf<ArrayList<String>>()
 
 fun main(args: Array<String>) {
@@ -46,6 +48,15 @@ fun main(args: Array<String>) {
                 if (!playerWon && boardFull) {
                     println("is a tie!! empate!")
                     continueGame = false
+                }
+                if (continueGame) {
+                    placeComputerMove()
+                    printBoard()
+                    val computerWon = checkWinner(false)
+                    if (computerWon) {
+                        println("computer won!!! hjueheuheuheu")
+                        continueGame = false
+                    }
                 }
             }
 
@@ -107,5 +118,15 @@ fun checkBoardFull(): Boolean {
         }
     }
     return boardFull
+}
+
+fun placeComputerMove() {
+    var i = 0
+    var j = 0
+    do {
+        i = Random.nextInt(3)
+        j = Random.nextInt(3)
+    } while (board[i][j] != "")
+    board[i][j] != "0"
 }
 
